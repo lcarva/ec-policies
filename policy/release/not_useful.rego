@@ -10,9 +10,9 @@ import data.lib
 # custom:
 #   short_name: bad_day
 #   failure_msg: It just feels like a bad day to do a release
-#   effective_on: 2022-01-01T00:00:00Z
+#   effective_on: 2023-01-01T00:00:00Z
 #
-deny_this[result] {
+deny[result] {
 	true
 	result := lib.result_helper(rego.metadata.chain(), [])
 }
