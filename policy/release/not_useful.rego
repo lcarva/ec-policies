@@ -12,7 +12,7 @@ import data.lib
 #   failure_msg: It just feels like a bad day to do a release
 #   effective_on: 2022-01-01T00:00:00Z
 #
-deny[result] {
+deny_this[result] {
 	true
 	result := lib.result_helper(rego.metadata.chain(), [])
 }
