@@ -141,3 +141,46 @@ _missing_tasks_error(missing) = error {
 		"effective_on": "2022-01-01T00:00:00Z",
 	}}
 }
+
+test_required_tasks_met {
+	attestations := __mock_taskref_data({"git-clone", "buildah"})
+	lib.assert_empty(deny_missing_required_tasks)
+		with data["required-tasks"] as _mock_required_tasks
+		with input.attestations as attestations
+}
+
+test_deny_missing_required_tasks {
+	attestations := __mock_taskref_data(["three", "four"])
+	lib.assert_equal(deny_missing_required_tasks, {{
+		"code": "missing_required_tasks",
+		"effective_on": "2022-01-01T00:00:00Z",
+		"msg": "Required tasks 'buildah', 'git-clone' were not found in the pipeline's task list",
+	}}) with data["required-tasks"] as _mock_required_tasks
+		with input.attestations as attestations
+}
+
+# TODO:
+# test_warn_future_required_tasks {
+# }
+
+_mock_required_tasks = [
+	# {
+	# 	"effective_on": "2199-01-01T00:00:00Z",
+	# 	"tasks": ["git-clone", "buildah", "scan"],
+	# },
+	{
+		"effective_on": "2022-01-01T00:00:00Z",
+		"tasks": ["git-clone", "buildah"],
+	},
+]
+
+__mock_taskref_data(tasks) = attestations {
+	# tasks = [t | t := _task(tasks[_])]
+	tasks1 = [t | t := _task(tasks[_])]
+
+	print("tasks1:", tasks1)
+	attestations := [{"predicate": {
+		"buildType": lib.pipelinerun_att_build_types[0],
+		"buildConfig": {"tasks": tasks1},
+	}}]
+}

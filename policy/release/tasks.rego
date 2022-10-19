@@ -96,3 +96,48 @@ _task_names(task, raw_name) = names {
 
 	names := {name} | params
 }
+
+# METADATA
+# title: Pipeline does not include all required check tasks
+# description: |-
+#   Every build pipeline is expected to contain a set of checks and tests that
+#   are required by the Enterprise Contract. This rule confirms that the pipeline
+#   definition includes all the expected tasks.
+#
+#   The matching is done using the taskRef name rather than the pipeline task name.
+#
+# custom:
+#   short_name: missing_required_tasks
+#   failure_msg: Required tasks %s were not found in the pipeline's task list
+#
+deny_missing_required_tasks[result] {
+	required := current_required_tasks
+	print("required:", required)
+
+	att := lib.pipelinerun_attestations[_]
+	found := { name |
+		task := att.predicate.buildConfig.tasks[_]
+		task_ref := refs.task_ref(task)
+		task_ref.kind == "task"
+		# TODO: Ignore tasks from unacceptable bundles?
+		# TODO: What about parameterized tasks?
+		name := task_ref.name
+	}
+	print("found:", found)
+	missing := required - found
+	print("missing:", missing)
+	count(missing) > 0
+	result := lib.result_helper(rego.metadata.chain(), [lib.quoted_values_string(missing)])
+}
+
+current_required_tasks = tasks {
+	required_tasks := data["required-tasks"]
+
+	# TODO: Iterate through tasks until non-future date is found. Then return that. If
+	# nothing is found, then return an empty list.
+	tasks := {t |
+		t := required_tasks[0].tasks[_]
+	}
+} else = {} {
+	true
+}
