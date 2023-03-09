@@ -13,7 +13,7 @@ import future.keywords.if
 
 import data.lib
 
-expected_kind := "Pipeline"
+expected_kind := "Pipelineeee"
 
 # (Not sure if we need this, but I'm using it to test the docs build.)
 

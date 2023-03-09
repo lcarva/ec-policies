@@ -909,7 +909,7 @@ pipeline-required-tasks:
         - sast-snyk-check
         - sbom-json-check
         - summary
-    - effective_on: "2023-03-12T00:00:00Z"
+    - effective_on: "2023-03-01T00:00:00Z"
       tasks:
         - buildah
         - clair-scan
