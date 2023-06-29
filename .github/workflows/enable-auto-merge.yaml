@@ -15,8 +15,7 @@ name: Enable auto-merge
     branches:
       - main-yolo
 
-permissions:
-  pull-requests: read
+permissions: read-all
 
 jobs:
   enable-auto-merge:
