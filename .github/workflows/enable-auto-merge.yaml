@@ -22,7 +22,8 @@ jobs:
   enable-auto-merge:
     runs-on: ubuntu-latest
     # if: github.event.pull_request.user.login == 'rh-tap-build-team[bot]'
-    permissions: write-all
+    permissions:
+      pull-requests: write
     steps:
       - uses: alexwilson/enable-github-automerge-action@253948b2e2433d985bbbebe7887ca347e1e1b1ec # main
         with:
