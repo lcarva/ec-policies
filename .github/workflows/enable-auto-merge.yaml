@@ -27,12 +27,12 @@ jobs:
       actions: write
       checks: write
       contents: write
-      deployments: write
-      issues: write
-      packages: write
-      pages: write
-      repository-projects: write
-      security-events: write
+      # deployments: write
+      # issues: write
+      # packages: write
+      # pages: write
+      # repository-projects: write
+      # security-events: write
       statuses: write
     steps:
       - uses: alexwilson/enable-github-automerge-action@253948b2e2433d985bbbebe7887ca347e1e1b1ec # main
