@@ -21,7 +21,7 @@ permissions:
 jobs:
   enable-auto-merge:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.user.login == 'rh-tap-build-team[bot]'
+    # if: github.event.pull_request.user.login == 'rh-tap-build-team[bot]'
     permissions:
       pull-requests: write
     steps:
