@@ -24,16 +24,16 @@ jobs:
     # if: github.event.pull_request.user.login == 'rh-tap-build-team[bot]'
     permissions:
       pull-requests: write
-      actions: read
-      checks: read
-      contents: read
-      deployments: read
-      issues: read
-      packages: read
-      pages: read
-      repository-projects: read
-      security-events: read
-      statuses: read
+      actions: write
+      checks: write
+      contents: write
+      deployments: write
+      issues: write
+      packages: write
+      pages: write
+      repository-projects: write
+      security-events: write
+      statuses: write
     steps:
       - uses: alexwilson/enable-github-automerge-action@253948b2e2433d985bbbebe7887ca347e1e1b1ec # main
         with:
