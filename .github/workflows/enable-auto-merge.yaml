@@ -13,7 +13,7 @@ name: Enable auto-merge
       - opened
       - reopened
     branches:
-      - main
+      - main-yolo
 
 permissions:
   pull-requests: read
