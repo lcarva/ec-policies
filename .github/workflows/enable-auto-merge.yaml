@@ -15,7 +15,8 @@ name: Enable auto-merge
     branches:
       - main-yolo
 
-permissions: read-all
+permissions:
+  pull-requests: read
 
 jobs:
   enable-auto-merge:
@@ -23,6 +24,18 @@ jobs:
     # if: github.event.pull_request.user.login == 'rh-tap-build-team[bot]'
     permissions:
       pull-requests: write
+      actions: read
+      checks: read
+      contents: read
+      deployments: read
+      id-token: read
+      issues: read
+      metadata: read
+      packages: read
+      pages: read
+      repository-projects: read
+      security-events: read
+      statuses: read
     steps:
       - uses: alexwilson/enable-github-automerge-action@253948b2e2433d985bbbebe7887ca347e1e1b1ec # main
         with:
