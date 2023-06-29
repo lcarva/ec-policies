@@ -30,7 +30,6 @@ jobs:
       deployments: read
       id-token: read
       issues: read
-      metadata: read
       packages: read
       pages: read
       repository-projects: read
