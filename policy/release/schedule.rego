@@ -25,6 +25,7 @@ import data.lib
 #   - redhat
 #
 deny contains result if {
+	intent == "release"
 	today := lower(time.weekday(lib.time.effective_current_time_ns))
 	disallowed := {lower(w) | some w in lib.rule_data("disallowed_weekdays")}
 	count(disallowed) > 0
@@ -46,6 +47,7 @@ deny contains result if {
 #   - redhat
 #
 deny contains result if {
+	intent == "release"
 	today := time.format([lib.time.effective_current_time_ns, "UTC", "2006-01-02"])
 	disallowed := lib.rule_data("disallowed_dates")
 	today in disallowed
@@ -126,3 +128,5 @@ _rule_data_errors contains msg if {
 	not time.parse_ns("2006-01-02", date)
 	msg := sprintf("Rule data %s has unexpected format: %d: Invalid date %q", [key, index, date])
 }
+
+intent := object.get(data.config, ["policy", "intent"], "")
