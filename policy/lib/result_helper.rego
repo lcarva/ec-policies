@@ -16,6 +16,24 @@ result_helper_with_term(chain, failure_sprintf_params, term) := object.union(
 	{"term": term},
 )
 
+with_long_pkg_name(chain, original) := modified if {
+	rule_name := split(original.code, ".")[1]
+
+	pkg_name := _long_pkg_name(chain)
+	# new_rule_path := chain[0].path
+	# new_pkg_name := _pkg_name(new_rule_path)
+
+	new_code := sprintf("%s.%s", [pkg_name, rule_name])
+    modified := object.union(original, {"code": new_code})
+}
+
+matches_rule_name(chain, result) if {
+	name_from_annotations := _rule_annotations(chain).custom.short_name
+	name_from_result := split(result.code, ".")[1]
+
+	name_from_annotations == name_from_result
+}
+
 _basic_result(chain, failure_sprintf_params) := {
 	"code": _code(chain),
 	"msg": sprintf(_rule_annotations(chain).custom.failure_msg, failure_sprintf_params),
@@ -70,6 +88,14 @@ _pkg_name(rule_path) := name if {
 
 	# Put it all together with dots in between
 	name := concat(".", p8)
+}
+
+_long_pkg_name(chain) := name if {
+	p1 := chain[0].path
+	# Remove the "deny" or "warn" element
+	p2 := _right_strip_elements(["deny"], p1)
+	p3 := _right_strip_elements(["warn"], p2)
+	name := concat(".", p3)
 }
 
 _left_strip_elements(items_to_strip, list) := new_list if {

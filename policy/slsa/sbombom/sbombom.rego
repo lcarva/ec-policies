@@ -1,15 +1,9 @@
-#
-# METADATA
-# title: SBOM
-# description: >-
-#   Checks general properties of the SBOMs associated with the image being validated. More specific
-#   rules for SPDX and CycloneDX SBOMs are in separate packages.
-#
-package release.sbom
+package ec.slsa.sbombom
 
 import rego.v1
 
 import data.lib
+import data.release.sbom as _sbom
 
 # METADATA
 # title: Found
@@ -25,8 +19,9 @@ import data.lib
 #   - spam
 #
 deny contains result if {
-	count(_sboms) == 0
-	result := lib.result_helper(rego.metadata.chain(), [])
+    some original in _sbom.deny
+    lib.matches_rule_name(rego.metadata.chain(), original)
+    result := lib.with_long_pkg_name(rego.metadata.chain(), original)
 }
 
 # METADATA
@@ -46,9 +41,7 @@ deny contains result if {
 #   - spam
 #
 deny contains result if {
-	# some error in lib.sbom.rule_data_errors
-	some error in ["spam", "bacon", "eggs"]
-	result := lib.result_helper(rego.metadata.chain(), [error])
+    some original in _sbom.deny
+    lib.matches_rule_name(rego.metadata.chain(), original)
+    result := lib.with_long_pkg_name(rego.metadata.chain(), original)
 }
-
-_sboms := array.concat(lib.sbom.spdx_sboms, lib.sbom.cyclonedx_sboms)
